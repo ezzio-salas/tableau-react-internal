@@ -5043,6 +5043,23 @@
       global.tab = global.tab || {};
       global.tableauSoftware = global.tableauSoftware || {};
       ss.initAssembly($asm, 'Tableau.JavaScript.Vql.Api');
+
+      // Wrapper hack
+      var Element = Element || window.Element;
+      
+        // Tableau.JavaScript.Vql.Api.ApiBootstrap
+      var $tab__ApiBootstrap = global.tab._ApiBootstrap = ss.mkType($asm, 'tab._ApiBootstrap', null, null, {
+        initialize: function ApiBootstrap$Initialize() {
+        // Register the default implementations for all of the interfaces.
+        // The test code will register mocks, which will overwrite these
+        // registrations.
+        tab._ApiObjectRegistry.registerApiMessageRouter(function() {
+          return new $tab_JsApiMessageRouter();
+        });
+        }
+      });
+    
+      
       ////////////////////////////////////////////////////////////////////////////////
       // tableauSoftware.CustomViewEventContext
       var $tab_$CustomViewEventContext = ss.mkType($asm, 'tab.$CustomViewEventContext', function(workbook, customViewImpl) {
@@ -6337,7 +6354,16 @@
             // So this will return the most recent navigation on the web page, whether initiated by user or script.
             // User navigating followed by script refreshing the page should still be good to not clone the session.
             // User refreshing the page followed by script navigation will be detected as navigate and will waste a cloned session.
-            url.push('navType=' + window.performance.navigation.type.toString() + '&');
+            // N/A HACK
+            var navType = '0'; // default to TYPE_NAVIGATE
+            if (
+              window.performance &&
+              window.performance.navigation &&
+              window.performance.navigation.type
+            ) {
+              navType = window.performance.navigation.type.toString();
+            }
+            url.push('navType=' + navType + '&');
             url.push('navSrc=' + 'Parse'.toString());
           }
           return url.join('');
@@ -8846,7 +8872,7 @@
             return null;
           }
           var $t1 = document.createElement('IFrame');
-          var ifr = ss.cast($t1, ss.isValue($t1) && (ss.isInstanceOfType($t1, Element) && $t1.tagName === 'IFRAME'));
+          var ifr = ss.cast($t1, ss.isValue($t1) && (ss.isInstanceOfType($t1, Element) && $t1.tagName === 'IFRAME'));          
           ifr.frameBorder = '0';
           ifr.setAttribute('allowTransparency', 'true');
           ifr.setAttribute('allowFullScreen', 'true');
