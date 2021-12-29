@@ -16,6 +16,10 @@
     "react",
     "js"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ezzio-salas/tableau-react-internal.git"
+  },
   "author": "Ezzio Salas",
   "license": "MIT",
   "dependencies": {
