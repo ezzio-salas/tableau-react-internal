@@ -1,4 +1,4 @@
-/*! tableau-2.6.0 */
+/*! tableau-2.6.0 added Viz Hack to prevent window errors in 2.6 */
 (function() {
 
 
@@ -1977,7 +1977,9 @@
         }
       });
       ////////////////////////////////////////////////////////////////////////////////
-      // Tableau.JavaScript.Vql.Core.ConsoleLogAppender
+      // Tableau.JavaScript.Vql.Core.ConsoleLogAppender only for internal
+
+
       var $tab_ConsoleLogAppender = global.tab.ConsoleLogAppender = ss.mkType($asm, 'tab.ConsoleLogAppender', function() {
         this.$levelMethods = null;
         $tab_BaseLogAppender.call(this);
